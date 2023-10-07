@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/go-resty/resty/v2"
+	jsoniter "github.com/json-iterator/go"
 	"github.com/polygon-io/client-go/rest/encoder"
 	"github.com/polygon-io/client-go/rest/models"
 )
@@ -48,6 +49,8 @@ func newClient(apiKey string, hc *http.Client) Client {
 	c.SetTimeout(10 * time.Second)
 	c.SetHeader("User-Agent", fmt.Sprintf("Polygon.io GoClient/%v", clientVersion))
 	c.SetHeader("Accept-Encoding", "gzip")
+	c.SetJSONMarshaler(jsoniter.Marshal)
+	c.SetJSONUnmarshaler(jsoniter.Unmarshal)
 
 	return Client{
 		HTTP:    c,
